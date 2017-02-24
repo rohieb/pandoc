@@ -231,7 +231,10 @@ convertWithOpts opts = do
 
   variables <- return (optVariables opts)
       >>=
-      (\vars -> return $ ("outputfile", optOutputFile opts) : vars)
+      {-(\vars -> return $ ("outputfile", optOutputFile opts) : vars)-}
+      {->>=-}
+      withList (addStringAsVariable "outputfile")
+               (optOutputFiles opts)
       >>=
       withList (addStringAsVariable "sourcefile")
                (optInputFiles opts)
