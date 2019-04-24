@@ -67,7 +67,7 @@ import Skylighting.Parser (addSyntaxDefinition, missingIncludes,
                            parseSyntaxDefinition)
 import System.Console.GetOpt
 import System.Directory (Permissions (..), doesFileExist, findExecutable,
-                         getAppUserDataDirectory, getPermissions)
+                         getAppUserDataDirectory, getCurrentDirectory, getPermissions)
 import System.Environment (getArgs, getEnvironment, getProgName)
 import System.Exit (ExitCode (..), exitSuccess)
 import System.FilePath
@@ -350,6 +350,9 @@ convertWithOpts opts = do
                  (optIncludeInHeader opts)
         >>=
         withList (addStringAsVariable "css") (optCss opts)
+        >>=
+        maybe return (addStringAsVariable "pwd")
+                     (getCurrentDirectory opts)
         >>=
         maybe return (addStringAsVariable "title-prefix")
                      (optTitlePrefix opts)
